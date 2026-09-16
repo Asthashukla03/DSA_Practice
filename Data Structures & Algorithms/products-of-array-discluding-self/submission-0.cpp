@@ -1,28 +1,26 @@
 class Solution {
 public:
-    string encode(vector<string>& strs) {
-        string res;
-        for (const string& s : strs) {
-            res.append(to_string(s.size()));
-            res.push_back('#');
-            res.append(s);
-        }
-        return res;
-    }
-
-    vector<string> decode(string s) {
-        vector<string> res;
-        int i = 0;
-        while (i < s.size()) {
-            int j = i;
-            while (s[j] != '#') {
-                j++;
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int prod = 1, zeroCount = 0;
+        for (int num : nums) {
+            if (num != 0) {
+                prod *= num;
+            } else {
+                zeroCount++;
             }
-            int length = stoi(s.substr(i, j - i));
-            i = j + 1;
-            j = i + length;
-            res.push_back(s.substr(i, length));
-            i = j;
+        }
+
+        if (zeroCount > 1) {
+            return vector<int>(nums.size(), 0);
+        }
+
+        vector<int> res(nums.size());
+        for (size_t i = 0; i < nums.size(); i++) {
+            if (zeroCount > 0) {
+                res[i] = (nums[i] == 0) ? prod : 0;
+            } else {
+                res[i] = prod / nums[i];
+            }
         }
         return res;
     }
